@@ -1,0 +1,46 @@
+# Relatório Diário de Compras
+
+Este repositório contém um script SQL para criar um banco de dados `ESCOLA` e uma procedure que gera um relatório diário da quantidade de produtos comprados por dia.
+
+## Criação do Banco de Dados e Tabelas
+
+O código a seguir cria um banco de dados `ESCOLA`, duas tabelas (`Produtos` e `Vendas`) e uma procedure `RelatorioDiarioCompras`.
+
+```sql
+-- Passo 1: Criar uma tabela de produtos (caso não exista)
+CREATE TABLE IF NOT EXISTS Produtos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255),
+    preco DECIMAL(10, 2)
+);
+
+-- Passo 2: Criar uma tabela de vendas (caso não exista)
+CREATE TABLE IF NOT EXISTS Vendas (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    produto_id INT,
+    quantidade INT,
+    data_venda DATE,
+    FOREIGN KEY (produto_id) REFERENCES Produtos(id)
+);
+
+-- Passo 3: Criar a procedure para gerar o relatório diário
+DELIMITER //
+
+CREATE PROCEDURE RelatorioDiarioCompras()
+BEGIN
+    SELECT 
+        data_venda,
+        produto_id,
+        SUM(quantidade) AS total_quantidade
+    FROM 
+        Vendas
+    WHERE 
+        data_venda = CURDATE()
+    GROUP BY 
+        data_venda, produto_id;
+END //
+
+DELIMITER ;
+
+-- Chamar a procedure para testar
+CALL RelatorioDiarioCompras();
