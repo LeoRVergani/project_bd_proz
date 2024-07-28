@@ -1,5 +1,4 @@
 # Relatório Diário de Compras
-
 Este repositório contém um script SQL para criar um banco de dados `ESCOLA` e uma procedure que gera um relatório diário da quantidade de produtos comprados por dia.
 
 ## Criação do Banco de Dados e Tabelas
